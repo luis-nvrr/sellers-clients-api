@@ -66,7 +66,9 @@ All application configuration is in the ***./src/main/resources/application.prop
 - [X] Posts service
 - [X] Buyer endpoint
 - [X] Seller endpoint
-- [X] Posts endpoint
+- [ ] Posts endpoint
+- [X] Seller's endpoint documentation
+- [ ] Post's endpoint documentation
 
 ## Endpoints
 
@@ -171,5 +173,70 @@ curl --request DELETE \
   "buyerUsername": "buyer",
   "buyerNewFollowingCount": 0,
   "sellerNewFollowersCount": 0
+}
+```
+
+### Buyers 
+
+#### Get followers of a seller
+
+- Path params:
+  - sellerUsername: a seller's username.
+
+
+- Model:
+```shell
+curl --request GET \
+  --url http://localhost:8080/sellers/{sellerUsername}/followers
+```
+
+- Working example:
+```shell
+curl --request GET \
+  --url http://localhost:8080/sellers/seller/followers
+```
+
+- Response
+```json
+{
+  "sellerUsername": "seller",
+  "followers": [
+    {
+      "username": "buyer",
+      "email": "buyer@meli.com",
+      "creationDate": "2022-02-23T03:00:00.000+00:00",
+      "followingSellersUsernames": [
+        "seller"
+      ]
+    }
+  ]
+}
+```
+
+#### Get followers count of a seller
+
+- Path params:
+  - sellerUsername: a seller's username.
+- Query param:
+  - shouldCount=true: tells the api it should return the count of followers.
+
+
+- Model:
+```shell
+curl --request GET \
+  --url 'http://localhost:8080/sellers/{sellerUsername}/followers?shouldCount=true'
+```
+
+- Working example:
+```shell
+curl --request GET \
+  --url 'http://localhost:8080/sellers/seller/followers?shouldCount=true'
+```
+
+- Response
+```json
+{
+  "sellerUsername": "seller",
+  "followersCount": 1
 }
 ```

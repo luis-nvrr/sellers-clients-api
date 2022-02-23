@@ -4,12 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetSellerFollowersResponse {
-    String sellerUsername;
-    List<BuyerResponse> followers;
+public class BuyerResponse {
+    private String username;
+    private String email;
+    private Date creationDate;
+    private List<String> followingSellersUsernames;
 }

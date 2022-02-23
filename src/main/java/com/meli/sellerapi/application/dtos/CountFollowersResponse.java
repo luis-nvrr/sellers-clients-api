@@ -6,5 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CountFollowersResponse {
+    private String sellerUsername;
     private int followersCount;
 }
