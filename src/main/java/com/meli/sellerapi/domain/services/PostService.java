@@ -7,8 +7,4 @@ public interface PostService {
     CreatePostResponse createPost(CreatePostRequest createPostRequest) throws UserNotFoundException;
 
     GetLastTwoWeeksPostsResponse findPostsFromLastTwoWeeks(GetLastTwoWeeksPostsRequest request) throws UserNotFoundException;
-
-    GetPromotionalPostsResponse findAllPromotionalPosts(String sellerUsername) throws UserNotFoundException;
-
-    GetPromotionalPostsCountResponse countPromotionalPosts(String sellerUsername) throws UserNotFoundException;
 }

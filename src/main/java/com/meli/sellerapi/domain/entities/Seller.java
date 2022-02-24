@@ -29,7 +29,7 @@ public class Seller {
     private List<Post> posts;
 
     @OneToMany(mappedBy = "seller")
-    private List<Post> promotionalPosts;
+    private List<PromotionalPost> promotionalPosts;
 
     public Seller(User user) {
         this.user = user;
@@ -51,12 +51,7 @@ public class Seller {
     }
 
     public void addPost(Post post) {
-        if (post.isPromotion()) {
-            this.promotionalPosts.add(post);
-        }
-        else {
-            this.posts.add(post);
-        }
+        this.posts.add(post);
     }
 
     public int countPosts() {

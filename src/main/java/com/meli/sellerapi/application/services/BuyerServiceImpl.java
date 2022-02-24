@@ -1,6 +1,7 @@
 package com.meli.sellerapi.application.services;
 
 import com.meli.sellerapi.application.dtos.*;
+import com.meli.sellerapi.domain.entities.PromotionalPost;
 import com.meli.sellerapi.domain.exceptions.AlreadyFollowingException;
 import com.meli.sellerapi.domain.entities.Buyer;
 import com.meli.sellerapi.domain.entities.Post;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 public class BuyerServiceImpl implements BuyerService {
     private final BuyerRepository buyerRepository;
     private final SellerRepository sellerRepository;
-    private final Logger logger = Logger.getLogger(BuyerService.class.getName());
 
     public BuyerServiceImpl(BuyerRepository buyerRepository, SellerRepository sellerRepository) {
         this.buyerRepository = buyerRepository;
@@ -102,8 +101,8 @@ public class BuyerServiceImpl implements BuyerService {
                 .map(this::buildPostResponse).collect(Collectors.toList());
         sellerResponse.setPosts(posts);
 
-        List<PostResponse> promotionalPosts = seller.getPromotionalPosts().stream()
-                .map(this::buildPostResponse).collect(Collectors.toList());
+        List<PromotionalPostResponse> promotionalPosts = seller.getPromotionalPosts().stream()
+                .map(this::buildPromotionalPostResponse).collect(Collectors.toList());
         sellerResponse.setPromotionalPosts(promotionalPosts);
 
         return sellerResponse;
@@ -113,9 +112,13 @@ public class BuyerServiceImpl implements BuyerService {
         PostResponse postResponse = new PostResponse();
         postResponse.setDescription(post.getDescription());
         postResponse.setCreationDate(post.getCreationDate());
-        postResponse.setPromotion(post.isPromotion());
-        postResponse.setCashbackEligible(post.isCashbackEligible());
         return postResponse;
     }
 
+    private PromotionalPostResponse buildPromotionalPostResponse(PromotionalPost post) {
+        PromotionalPostResponse postResponse = new PromotionalPostResponse();
+        postResponse.setDescription(post.getDescription());
+        postResponse.setCreationDate(post.getCreationDate());
+        return postResponse;
+    }
 }

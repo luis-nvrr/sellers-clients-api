@@ -7,5 +7,4 @@ import lombok.Data;
 @AllArgsConstructor
 public class GetLastTwoWeeksPostsRequest {
     private String buyerUsername;
-    private boolean sortByMostRecentFirst;
 }

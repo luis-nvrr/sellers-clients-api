@@ -16,5 +16,5 @@ public class SellerResponse {
     private Date creationDate;
     private List<String> followersUsernames;
     private List<PostResponse> posts;
-    private List<PostResponse> promotionalPosts;
+    private List<PromotionalPostResponse> promotionalPosts;
 }

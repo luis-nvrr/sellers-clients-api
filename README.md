@@ -66,11 +66,37 @@ All application configuration is in the ***./src/main/resources/application.prop
 - [X] Posts service
 - [X] Buyer endpoint
 - [X] Seller endpoint
-- [ ] Posts endpoint
+- [X] Posts endpoint
 - [X] Seller's endpoint documentation
-- [ ] Post's endpoint documentation
+- [X] Post's endpoint documentation
+- [ ] Refactor Post sorting strategy
+- [X] Refactor Post & Promotional post
 
-## Endpoints
+## Endpoints Overview
+
+This API has 4 endpoints:
+- ```
+  /buyers
+  ```
+- ```
+  /sellers
+  ```
+
+- ```
+  /posts
+  ```
+
+- ```
+  /promotionalPosts
+  ```
+
+Each following detailed explanation consists of:
+1. Parameters required
+2. Request model
+3. Request example
+4. Response example
+
+## Endpoints Details
 
 ### Buyers 
 
@@ -82,31 +108,59 @@ All application configuration is in the ***./src/main/resources/application.prop
 
 - Model:
 ```shell
-curl -X GET http://localhost:8080/buyers/{buyerUsername}/following
+curl --request GET \
+  --url http://localhost:8080/buyers/{buyerUsername}/following
 ```
 
 - Working example:
 ```shell
-curl -X GET http://localhost:8080/buyers/buyer/following
+curl --request GET \
+  --url http://localhost:8080/buyers/buyer/following
 ```
 
 - Response:
 ```json
 {
-	"buyerUsername": "buyer",
-	"followingSellers": [
-		{
-			"username": "seller",
-			"email": "seller@meli.com",
-			"creationDate": "2022-02-23T03:00:00.000+00:00",
-			"followersUsernames": [
-				"buyer"
-			],
-			"posts": [],
-			"promotionalPosts": []
-		}
-	],
-	"followingCount": 1
+  "buyerUsername": "buyer",
+  "followingSellers": [
+    {
+      "username": "seller",
+      "email": "seller@meli.com",
+      "creationDate": "2022-02-24T03:00:00.000+00:00",
+      "followersUsernames": [
+        "buyer"
+      ],
+      "posts": [
+        {
+          "description": "this is a new post",
+          "creationDate": "2022-02-24T03:12:49.513+00:00"
+        },
+        {
+          "description": "new promotional post",
+          "creationDate": "2022-02-24T03:12:51.999+00:00"
+        },
+        {
+          "description": "new promotional post",
+          "creationDate": "2022-02-24T03:13:17.768+00:00"
+        },
+        {
+          "description": "this is a new post",
+          "creationDate": "2022-02-24T03:13:24.751+00:00"
+        }
+      ],
+      "promotionalPosts": [
+        {
+          "description": "new promotional post",
+          "creationDate": "2022-02-24T03:12:51.999+00:00"
+        },
+        {
+          "description": "new promotional post",
+          "creationDate": "2022-02-24T03:13:17.768+00:00"
+        }
+      ]
+    }
+  ],
+  "followingCount": 1
 }
 ```
 
@@ -176,7 +230,7 @@ curl --request DELETE \
 }
 ```
 
-### Buyers 
+### Sellers
 
 #### Get followers of a seller
 
@@ -238,5 +292,200 @@ curl --request GET \
 {
   "sellerUsername": "seller",
   "followersCount": 1
+}
+```
+
+### Posts
+
+#### Create new post
+
+- Request body
+  - description: the post content;
+  - sellerUsername: the username of the seller owner of this post;
+
+
+- Model:
+```shell
+curl --request POST \
+  --url http://localhost:8080/posts/ \
+  --header 'Content-Type: application/json' \
+  --data '{
+	  "description": "{description}",
+		"sellerUsername": "{sellerUsername}"
+}'
+```
+
+- Working example:
+```shell
+curl --request POST \
+  --url http://localhost:8080/posts/ \
+  --header 'Content-Type: application/json' \
+  --data '{
+	  "description": "this is a new post",
+		"sellerUsername": "seller"
+}'
+```
+
+- Response
+```json
+{
+  "post": {
+    "description": "this is a new post",
+    "creationDate": "2022-02-24T03:21:36.490+00:00"
+  }
+}
+```
+
+#### Get posts from buyers followed by a user, from the last two weeks
+The posts are sorted by most recent to older
+
+- Query params
+  - buyerUsername: the buyer's username from which to search the sellers;
+
+- Model:
+```shell
+curl --request GET \
+  --url 'http://localhost:8080/posts?buyerUsername={buyerUsername}'
+```
+
+- Working example:
+```shell
+curl --request GET \
+  --url 'http://localhost:8080/posts?buyerUsername=buyer'
+```
+
+- Response
+```json
+{
+  "buyerUsername": "buyer",
+  "followingSellersPosts": [
+    {
+      "description": "this is a new post",
+      "creationDate": "2022-02-24T03:21:36.490+00:00"
+    },
+    {
+      "description": "this is a new post",
+      "creationDate": "2022-02-24T03:21:17.550+00:00"
+    },
+    {
+      "description": "this is a new post",
+      "creationDate": "2022-02-24T03:13:24.751+00:00"
+    },
+    {
+      "description": "new promotional post",
+      "creationDate": "2022-02-24T03:13:17.768+00:00"
+    },
+    {
+      "description": "new promotional post",
+      "creationDate": "2022-02-24T03:12:51.999+00:00"
+    },
+    {
+      "description": "this is a new post",
+      "creationDate": "2022-02-24T03:12:49.513+00:00"
+    }
+  ],
+  "postsCount": 6
+}
+```
+
+### Promotional posts
+
+#### Create new promotional post
+
+- Request body
+  - description: the post content;
+  - sellerUsername: the username of the seller owner of this post;
+
+
+- Model:
+```shell
+curl --request POST \
+  --url http://localhost:8080/promotionalPosts \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"description" : "{description}",
+	"sellerUsername" : "{sellerUsername}"
+}'
+```
+
+- Working example:
+```shell
+curl --request POST \
+  --url http://localhost:8080/promotionalPosts \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"description" : "new promotional post",
+	"sellerUsername" : "seller"
+}'
+```
+
+- Response
+```json
+{
+  "post": {
+    "description": "new promotional post",
+    "creationDate": "2022-02-24T03:13:17.768+00:00"
+  }
+}
+```
+
+#### Get all promotional posts from a seller
+
+- Request params:
+  - sellerUsername: the username of the seller from which to search the promotional posts.
+
+
+- Model:
+```shell
+curl --request GET \
+  --url 'http://localhost:8080/promotionalPosts?sellerUsername={sellerUsername}'
+```
+
+- Working example:
+```shell
+curl --request GET \
+  --url 'http://localhost:8080/promotionalPosts?sellerUsername=seller'
+```
+
+- Response
+```json
+{
+  "promotionalPosts": [
+    {
+      "description": "new promotional post",
+      "creationDate": "2022-02-24T03:12:51.999+00:00"
+    },
+    {
+      "description": "new promotional post",
+      "creationDate": "2022-02-24T03:13:17.768+00:00"
+    }
+  ]
+}
+```
+
+
+#### Count all promotional posts from a seller
+
+- Request params:
+  - sellerUsername: the username of the seller from which to search the promotional posts.
+  - shouldCount: if true, tells the api to return the count of promotional posts.
+
+- Model:
+```shell
+curl --request GET \
+  --url 'http://localhost:8080/promotionalPosts?sellerUsername=seller&shouldCount=true'
+```
+
+- Working example:
+```shell
+curl --request GET \
+  --url 'http://localhost:8080/promotionalPosts?sellerUsername=seller&shouldCount=true'
+```
+
+- Response
+```json
+{
+  "sellerUsername": "seller",
+  "promotionalPostsCount": 2
 }
 ```

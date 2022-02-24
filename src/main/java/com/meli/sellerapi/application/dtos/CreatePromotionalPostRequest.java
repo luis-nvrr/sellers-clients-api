@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class CreatePostRequest {
+public class CreatePromotionalPostRequest {
     private String description;
     private String sellerUsername;
 }

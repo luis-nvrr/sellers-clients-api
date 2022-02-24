@@ -18,19 +18,17 @@ public class Post {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="seller_id", nullable=false)
+    @JoinColumn(name="seller", nullable=false)
     private Seller seller;
 
     private String description;
     private Date creationDate;
-    private boolean isPromotion;
     private boolean isCashbackEligible;
 
-    public Post( String description, Date creationDate, boolean isPromotion, boolean isCashbackEligible) {
+    public Post(Seller seller, String description, Date creationDate) {
+        this.seller = seller;
         this.description = description;
         this.creationDate = creationDate;
-        this.isPromotion = isPromotion;
-        this.isCashbackEligible = isCashbackEligible;
     }
 
     public boolean isAtMostTwoWeeksOld() {

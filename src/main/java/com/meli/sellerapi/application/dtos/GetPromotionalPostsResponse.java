@@ -9,5 +9,5 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class GetPromotionalPostsResponse {
-    private List<Post> promotionalPosts;
+    private List<PromotionalPostResponse> promotionalPosts;
 }
