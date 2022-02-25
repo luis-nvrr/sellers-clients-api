@@ -12,4 +12,5 @@ import java.util.Date;
 public class PostResponse {
     private String description;
     private Date creationDate;
+    private String sellerUsername;
 }

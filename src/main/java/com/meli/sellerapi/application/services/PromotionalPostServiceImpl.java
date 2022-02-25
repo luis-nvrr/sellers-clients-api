@@ -35,9 +35,15 @@ public class PromotionalPostServiceImpl implements PromotionalPostService {
         PromotionalPost promotionalPost = new PromotionalPost(post, seller);
         this.promotionalPostRepository.savePromotionalPost(promotionalPost);
 
-        return new CreatePromotionalPostResponse(
-                new PostResponse(promotionalPost.getPost().getDescription(),
-                        promotionalPost.getPost().getCreationDate()));
+        return new CreatePromotionalPostResponse(buildPostResponse(promotionalPost));
+    }
+
+    private PostResponse buildPostResponse(PromotionalPost post) {
+        PostResponse postResponse = new PostResponse();
+        postResponse.setDescription(post.getDescription());
+        postResponse.setCreationDate(post.getCreationDate());
+        postResponse.setSellerUsername(post.getSeller().getUsername());
+        return postResponse;
     }
 
     @Override

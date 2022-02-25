@@ -112,6 +112,7 @@ public class BuyerServiceImpl implements BuyerService {
         PostResponse postResponse = new PostResponse();
         postResponse.setDescription(post.getDescription());
         postResponse.setCreationDate(post.getCreationDate());
+        postResponse.setSellerUsername(post.getSeller().getUsername());
         return postResponse;
     }
 

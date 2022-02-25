@@ -40,6 +40,7 @@ public class PostServiceImpl implements PostService {
         PostResponse postResponse = new PostResponse();
         postResponse.setDescription(post.getDescription());
         postResponse.setCreationDate(post.getCreationDate());
+        postResponse.setSellerUsername(post.getSeller().getUsername());
         return postResponse;
     }
 
