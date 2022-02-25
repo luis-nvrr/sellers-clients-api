@@ -14,7 +14,7 @@ public class PromotionalPost {
     @GeneratedValue
     private Long id;
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "post")
     private Post post;
 
