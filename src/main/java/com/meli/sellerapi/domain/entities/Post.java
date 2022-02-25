@@ -23,7 +23,6 @@ public class Post {
 
     private String description;
     private Date creationDate;
-    private boolean isCashbackEligible;
 
     public Post(Seller seller, String description, Date creationDate) {
         this.seller = seller;
