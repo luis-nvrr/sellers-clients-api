@@ -53,8 +53,8 @@ class BuyerServiceImplTest {
         when(buyerRepository.findBuyerByUsername(buyerUsername)).thenReturn(buyer);
         when(sellerRepository.findSellerByUsername(sellerUsername)).thenReturn(seller);
 
-        FollowSellerRequest request = new FollowSellerRequest(buyerUsername);
-        FollowSellerResponse response = this.buyerService.followSeller(sellerUsername, request);
+        FollowSellerRequest request = new FollowSellerRequest(sellerUsername);
+        FollowSellerResponse response = this.buyerService.followSeller(buyerUsername, request);
 
         assertEquals(1,response.getNewFollowingCount());
     }
